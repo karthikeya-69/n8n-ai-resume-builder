@@ -118,7 +118,7 @@ Users provide the following details via webhook:
 
 ## Workflow
 
-![Workflow](https://raw.githubusercontent.com/your-username/your-repo/main/screenshots/workflow.png)
+![Workflow](screenshots/workflow.png)
 
 ---
 
