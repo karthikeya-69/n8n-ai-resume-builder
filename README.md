@@ -128,7 +128,7 @@ Users provide the following details via webhook:
 
 > Upload a screenshot of a generated resume inside the `screenshots` folder.
 
-![Generated Resume](./screenshots/generated-resume.png)
+![Generated Resume](generated-resume.png)
 
 ---
 
