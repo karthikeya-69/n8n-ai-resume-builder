@@ -1,4 +1,4 @@
-# AI Resume Builder using n8n & Gemini AI
+# 🚀 AI Resume Builder using n8n & Gemini AI
 
 > Generate professional ATS-friendly resumes automatically using AI, PDF generation, and email automation.
 
@@ -9,7 +9,7 @@
 
 ---
 
-## Overview
+## 📌 Overview
 
 **AI Resume Builder** is an end-to-end automation workflow built with **n8n**, **Google Gemini AI**, and **Email Automation**.
 
@@ -17,9 +17,9 @@ The workflow collects user information, generates a professional ATS-friendly re
 
 ---
 
-## Demo
+## 🎥 Demo
 
-**Workflow Execution**
+### Workflow Execution
 
 1. User submits resume details
 2. n8n webhook receives data
@@ -31,7 +31,7 @@ The workflow collects user information, generates a professional ATS-friendly re
 
 ---
 
-## Features
+## ✨ Features
 
 - AI-Powered Resume Generation via Google Gemini
 - ATS-Friendly Resume Formatting
@@ -43,22 +43,22 @@ The workflow collects user information, generates a professional ATS-friendly re
 
 ---
 
-## Workflow Architecture
+## 🏗️ Workflow Architecture
 
-```
+```text
 User Input
       ↓
-Webhook              ← Receives candidate data
+Webhook
       ↓
-Set Fields           ← Structures data for AI
+Set Fields
       ↓
-Gemini AI            ← Generates ATS-friendly resume
+Gemini AI
       ↓
-JavaScript Node      ← Processes & formats output
+JavaScript Processing
       ↓
-PDF Generation API   ← Converts resume to PDF
+PDF Generation API
       ↓
-Email Delivery       ← Sends PDF to candidate
+Email Delivery
 ```
 
 ---
@@ -66,31 +66,31 @@ Email Delivery       ← Sends PDF to candidate
 ## 🛠️ Tech Stack
 
 | Technology | Purpose |
-|---|---|
-| **n8n** | Workflow Automation |
-| **Gemini AI** | Resume Generation |
-| **JavaScript** | Data Processing |
-| **REST APIs** | External Integrations |
-| **PDF Generation API** | PDF Creation |
-| **Gmail** | Email Automation |
-| **Webhooks** | Data Collection |
+|------------|---------|
+| n8n | Workflow Automation |
+| Gemini AI | Resume Generation |
+| JavaScript | Data Processing |
+| REST APIs | External Integrations |
+| PDF Generation API | PDF Creation |
+| Gmail | Email Automation |
+| Webhooks | Data Collection |
 
 ---
 
-## Input Data
+## 📥 Input Data
 
 Users provide the following details via webhook:
 
 | Field | Description |
-|---|---|
-| `name` | Candidate full name |
-| `email` | Resume delivery email |
-| `education` | Academic background |
-| `skills` | Technical & soft skills |
-| `projects` | Academic/personal projects |
-| `experience` | Work experience or fresher status |
+|---------|------------|
+| Name | Candidate Full Name |
+| Email | Resume Delivery Email |
+| Education | Academic Background |
+| Skills | Technical & Soft Skills |
+| Projects | Academic / Personal Projects |
+| Experience | Work Experience or Fresher Status |
 
-**Example payload:**
+### Example Payload
 
 ```json
 {
@@ -105,44 +105,54 @@ Users provide the following details via webhook:
 
 ---
 
-## Output
+## 📤 Output
 
 | Deliverable | Description |
-|---|---|
-| ✅ Professional Resume | AI-generated content |
-| ✅ ATS-Friendly Format | Optimised for recruitment systems |
-| ✅ PDF Document | Ready-to-submit resume |
-| ✅ Email Delivery | Automatically delivered to inbox |
+|-------------|-------------|
+| Professional Resume | AI-generated content |
+| ATS-Friendly Format | Optimized for recruitment systems |
+| PDF Document | Ready-to-submit resume |
+| Email Delivery | Automatically delivered to inbox |
 
 ---
 
-## Workflow
+## 📸 Workflow Screenshot
 
-![Workflow](screenshots/workflow.png)
+> Upload your workflow image to the repository and ensure it is located inside the `screenshots` folder.
+
+![Workflow](./screenshots/workflow.png)
 
 ---
 
-## Skills Demonstrated
+## 📄 Sample Generated Resume
 
-**AI Engineering**
+> Upload a screenshot of a generated resume inside the `screenshots` folder.
+
+![Generated Resume](./screenshots/generated-resume.png)
+
+---
+
+## 🎯 Skills Demonstrated
+
+### AI Engineering
 - Prompt Engineering
 - Gemini AI Integration
 - AI Workflow Design
 - Resume Content Generation
 
-**Automation**
+### Automation
 - Workflow Automation with n8n
 - Event-Driven Architecture
 - Business Process Automation
 - End-to-End Workflow Orchestration
 
-**Development**
+### Development
 - JavaScript Data Transformation
 - API Integration
 - JSON Data Processing
 - Error Handling & Workflow Logic
 
-**Cloud & Integration**
+### Cloud & Integration
 - Gmail Integration
 - Webhook Development
 - PDF Generation APIs
@@ -150,7 +160,7 @@ Users provide the following details via webhook:
 
 ---
 
-## What I Learned
+## 📚 What I Learned
 
 - Building AI-powered applications using Gemini AI
 - Integrating and orchestrating multiple APIs
@@ -162,7 +172,7 @@ Users provide the following details via webhook:
 
 ---
 
-## Project Impact
+## 💡 Project Impact
 
 This project demonstrates how Generative AI can be integrated into real-world business workflows to automate document creation and delivery.
 
@@ -175,7 +185,7 @@ By combining AI, workflow automation, PDF generation, and email integration, the
 - Multiple Resume Templates
 - Resume Score Analysis
 - Job Description Matching
-- ATS Optimisation Suggestions
+- ATS Optimization Suggestions
 - Web Application Frontend
 - LinkedIn Profile Import
 - Resume Analytics Dashboard
@@ -183,9 +193,9 @@ By combining AI, workflow automation, PDF generation, and email integration, the
 
 ---
 
-## Repository Structure
+## 📂 Repository Structure
 
-```
+```text
 ai-resume-builder-n8n/
 │
 ├── README.md
@@ -199,19 +209,18 @@ ai-resume-builder-n8n/
 
 ---
 
-## Author
+## 👨‍💻 Author
 
-**Karthikeya**  
-Computer Science & Engineering  
+**Karthikeya**
+
+Computer Science & Engineering
+
+AI & Automation Enthusiast
+
 Passionate about building practical AI-powered automation solutions using n8n, APIs, JavaScript, and Generative AI.
 
 ---
 
-
-## Repository Topics
+## 🏷️ Repository Topics
 
 `n8n` `gemini-ai` `automation` `workflow-automation` `resume-builder` `artificial-intelligence` `javascript` `pdf-generation` `gmail-api` `webhooks`
-
----
-
-*Built with ❤️ using n8n and Google Gemini AI*
