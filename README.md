@@ -116,13 +116,9 @@ Users provide the following details via webhook:
 
 ---
 
-## Screenshots
+## Workflow
 
-### Workflow
-![Workflow](screenshots/workflow.png)
-
-### Generated Resume
-![Generated Resume](screenshots/generated-resume.png)
+![Workflow](https://raw.githubusercontent.com/your-username/your-repo/main/screenshots/workflow.png)
 
 ---
 
