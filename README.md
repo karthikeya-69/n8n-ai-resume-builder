@@ -119,13 +119,9 @@ Users provide the following details via webhook:
 ## Screenshots
 
 ### Workflow
-
-<!-- Add your workflow screenshot here -->
 ![Workflow](screenshots/workflow.png)
 
 ### Generated Resume
-
-<!-- Add your generated resume screenshot here -->
 ![Generated Resume](screenshots/generated-resume.png)
 
 ---
