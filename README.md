@@ -120,7 +120,7 @@ Users provide the following details via webhook:
 
 > Upload your workflow image to the repository and ensure it is located inside the `screenshots` folder.
 
-![Workflow](./screenshots/workflow.png)
+![Workflow](workflow.png)
 
 ---
 
