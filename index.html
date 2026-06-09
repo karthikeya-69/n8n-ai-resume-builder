@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI Resume Builder · Karthikeya</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg:       #0d0f11;
+  --bg2:      #13161a;
+  --bg3:      #1a1e24;
+  --border:   rgba(255,255,255,0.08);
+  --border2:  rgba(255,255,255,0.14);
+  --text:     #e8eaed;
+  --muted:    #8b9099;
+  --accent:   #00e5a0;
+  --accent2:  #00b87d;
+  --adim:     rgba(0,229,160,0.10);
+  --aglow:    rgba(0,229,160,0.20);
+  --blue:     #4f9cf9;
+  --bdim:     rgba(79,156,249,0.10);
+  --amber:    #f5a623;
+  --adim2:    rgba(245,166,35,0.10);
+  --coral:    #ff6b6b;
+  --cdim:     rgba(255,107,107,0.10);
+  --purple:   #a78bfa;
+  --pdim:     rgba(167,139,250,0.10);
+  --font:     'Inter', system-ui, sans-serif;
+  --mono:     'JetBrains Mono', monospace;
+  --r:        10px;
+  --rl:       16px;
+}
+
+html { scroll-behavior: smooth; }
+body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+img { width: 100%; border-radius: var(--r); display: block; }
+
+/* NAV */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(13,15,17,0.88); backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem; height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.nav-brand { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--accent); }
+.nav-links { display: flex; gap: 1.5rem; }
+.nav-links a { font-size: 13px; color: var(--muted); transition: color .2s; }
+.nav-links a:hover { color: var(--text); text-decoration: none; }
+@media(max-width:600px){ .nav-links { display: none; } }
+
+/* HERO */
+.hero {
+  text-align: center;
+  padding: 5rem 2rem 4.5rem;
+  background: linear-gradient(160deg, #0d0f11 0%, #111827 50%, #0d0f11 100%);
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, var(--aglow), transparent);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--adim); border: 1px solid rgba(0,229,160,0.22);
+  border-radius: 999px; padding: 4px 14px;
+  font-size: 12px; font-family: var(--mono); color: var(--accent);
+  margin-bottom: 1.75rem; letter-spacing: .04em;
+}
+.hero-badge::before { content: '●'; font-size: 8px; }
+.hero h1 {
+  font-size: clamp(2rem, 5vw, 3.25rem);
+  font-weight: 600; line-height: 1.15; letter-spacing: -.02em;
+  color: #fff; margin-bottom: 1.25rem;
+}
+.hero h1 span { color: var(--accent); }
+.hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 580px; margin: 0 auto 2.5rem; line-height: 1.8; }
+.cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 10px 22px; border-radius: var(--r);
+  font-size: 14px; font-weight: 500; cursor: pointer; transition: all .2s; border: none;
+}
+.btn-primary { background: var(--accent); color: #000; }
+.btn-primary:hover { background: #1ffcb4; text-decoration: none; }
+.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border2); }
+.btn-ghost:hover { background: var(--bg3); text-decoration: none; }
+
+/* SECTION WRAPPER */
+.container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
+.section { padding: 4.5rem 0; border-top: 1px solid var(--border); }
+.section-label { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .4rem; }
+.section-title { font-size: 1.6rem; font-weight: 600; color: #fff; letter-spacing: -.02em; margin-bottom: .5rem; }
+.section-desc { color: var(--muted); font-size: .95rem; max-width: 520px; margin-bottom: 2rem; }
+
+/* METRICS */
+.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; }
+.metric { background: var(--bg2); padding: 1.75rem 1.25rem; text-align: center; transition: background .2s; }
+.metric:hover { background: var(--bg3); }
+.metric-val { font-size: 2rem; font-weight: 600; color: var(--accent); line-height: 1; margin-bottom: 6px; }
+.metric-label { font-size: 13px; color: var(--muted); }
+
+/* WORKFLOW */
+.flow-wrap {
+  display: flex; align-items: stretch; gap: 0;
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--rl); overflow: hidden;
+}
+.flow-step {
+  flex: 1; padding: 1.5rem 1.25rem;
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column; gap: 6px;
+  position: relative; transition: background .2s;
+}
+.flow-step:last-child { border-right: none; }
+.flow-step:hover { background: var(--bg3); }
+.flow-icon { font-size: 20px; margin-bottom: 4px; }
+.flow-name { font-size: 13px; font-weight: 600; color: #fff; }
+.flow-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+.flow-arrow {
+  position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px; background: var(--bg2);
+  border: 1px solid var(--border2); border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; color: var(--muted); z-index: 2;
+}
+@media(max-width:700px){
+  .flow-wrap { flex-direction: column; }
+  .flow-step { border-right: none; border-bottom: 1px solid var(--border); }
+  .flow-step:last-child { border-bottom: none; }
+  .flow-arrow { display: none; }
+}
+
+/* FEATURES */
+.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; }
+.feature { background: var(--bg2); padding: 1.75rem; transition: background .2s; }
+.feature:hover { background: var(--bg3); }
+.feature-icon { font-size: 22px; margin-bottom: .75rem; }
+.feature-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+.feature-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
+
+/* PAYLOAD */
+.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media(max-width:680px){ .two-col { grid-template-columns: 1fr; } }
+.code-block { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; }
+.code-hdr { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--bg3); }
+.code-hdr-name { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+.dots { display: flex; gap: 5px; }
+.dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--border2); }
+pre { padding: 1.25rem 1.5rem; font-family: var(--mono); font-size: 13px; line-height: 1.7; overflow-x: auto; color: var(--text); }
+.k { color: var(--blue); }
+.s { color: var(--accent); }
+.p { color: var(--muted); }
+
+.output-list { display: flex; flex-direction: column; gap: 10px; }
+.output-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border-radius: var(--r); border: 1px solid var(--border); background: var(--bg2); }
+.output-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
+.output-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+.output-desc { font-size: 12px; color: var(--muted); }
+
+/* SCREENSHOTS */
+.screenshot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+@media(max-width:600px){ .screenshot-grid { grid-template-columns: 1fr; } }
+.screenshot-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; }
+.screenshot-label { padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--border); font-family: var(--mono); }
+.screenshot-card img { border-radius: 0; }
+.screenshot-placeholder { padding: 3rem 2rem; text-align: center; color: var(--muted); font-size: 13px; background: var(--bg3); }
+.screenshot-placeholder span { display: block; font-size: 2rem; margin-bottom: .5rem; }
+
+/* STACK */
+.stack-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 8px 16px; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: 999px;
+  font-size: 13px; font-weight: 500; color: var(--text);
+  transition: border-color .2s, background .2s;
+}
+.pill:hover { border-color: var(--border2); background: var(--bg3); }
+.pill-dot { width: 7px; height: 7px; border-radius: 50%; }
+
+/* SKILLS */
+.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
+.skill-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: var(--r);
+  font-size: 13px; color: var(--muted); transition: all .2s;
+}
+.skill-item:hover { border-color: var(--border2); color: var(--text); }
+.skill-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: .45; flex-shrink: 0; }
+.skill-item:hover::before { opacity: 1; }
+
+/* FUTURE */
+.future-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+.future-item {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 16px; background: var(--bg2);
+  border: 1px solid var(--border); border-radius: var(--r);
+  font-size: 13px; color: var(--muted); transition: all .2s;
+}
+.future-item:hover { border-color: var(--accent2); color: var(--text); }
+.future-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: .35; flex-shrink: 0; transition: opacity .2s; }
+.future-item:hover::before { opacity: 1; }
+
+/* AUTHOR */
+.author-card {
+  background: var(--bg2); border: 1px solid var(--border);
+  border-radius: var(--rl); padding: 2rem;
+  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+}
+.avatar {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent), var(--blue));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 600; color: #000; flex-shrink: 0;
+}
+.author-name { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 2px; }
+.author-role { font-size: 13px; color: var(--muted); }
+.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
+.tag { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-family: var(--mono); }
+
+footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-size: 12px; color: var(--muted); font-family: var(--mono); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-brand">ai-resume-builder</span>
+  <div class="nav-links">
+    <a href="#overview">Overview</a>
+    <a href="#workflow">Workflow</a>
+    <a href="#features">Features</a>
+    <a href="#payload">API</a>
+    <a href="#screenshots">Screenshots</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-badge">n8n · Gemini AI · PDF Automation</div>
+  <h1>AI Resume Builder<br><span>using n8n & Gemini AI</span></h1>
+  <p class="hero-sub">Generate professional ATS-friendly resumes automatically. Submit your details — AI writes the content, a PDF lands in your inbox.</p>
+  <div class="cta-row">
+    <a href="https://github.com/YOUR_USERNAME/AI-Resume-Builder" class="btn btn-primary">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
+      View on GitHub
+    </a>
+    <a href="#workflow" class="btn btn-ghost">See architecture →</a>
+  </div>
+</section>
+
+<div class="container">
+
+  <!-- OVERVIEW -->
+  <section class="section" id="overview">
+    <p class="section-label">Overview</p>
+    <h2 class="section-title">What is this project?</h2>
+    <p class="section-desc">An end-to-end automation workflow — from raw candidate data to a PDF resume delivered by email, with no manual steps in between.</p>
+
+    <div class="metrics-grid">
+      <div class="metric"><div class="metric-val">6+</div><div class="metric-label">Workflow nodes</div></div>
+      <div class="metric"><div class="metric-val">3</div><div class="metric-label">Integrated APIs</div></div>
+      <div class="metric"><div class="metric-val">100%</div><div class="metric-label">Automated</div></div>
+      <div class="metric"><div class="metric-val">ATS</div><div class="metric-label">Optimised output</div></div>
+    </div>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section class="section" id="workflow">
+    <p class="section-label">Architecture</p>
+    <h2 class="section-title">Seven-stage pipeline</h2>
+    <p class="section-desc">Each n8n node has a single responsibility. Data flows in one direction — clean, auditable, easy to debug.</p>
+
+    <div class="flow-wrap">
+      <div class="flow-step">
+        <div class="flow-icon">📥</div>
+        <div class="flow-name">User input</div>
+        <div class="flow-desc">Name, email, skills, projects, experience</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">🔗</div>
+        <div class="flow-name">Webhook</div>
+        <div class="flow-desc">n8n receives POST payload</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">⚙️</div>
+        <div class="flow-name">Set fields</div>
+        <div class="flow-desc">Normalise & map variables</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">🤖</div>
+        <div class="flow-name">Gemini AI</div>
+        <div class="flow-desc">Generate ATS resume content</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">{ }</div>
+        <div class="flow-name">JS processing</div>
+        <div class="flow-desc">Parse & format AI output</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">📄</div>
+        <div class="flow-name">PDF.co API</div>
+        <div class="flow-desc">Convert to PDF document</div>
+        <div class="flow-arrow">›</div>
+      </div>
+      <div class="flow-step">
+        <div class="flow-icon">✉️</div>
+        <div class="flow-name">Gmail delivery</div>
+        <div class="flow-desc">PDF sent to user inbox</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section class="section" id="features">
+    <p class="section-label">Features</p>
+    <h2 class="section-title">What it does</h2>
+    <p class="section-desc">Built to be end-to-end — no manual steps, no copy-pasting between tools.</p>
+
+    <div class="features-grid">
+      <div class="feature">
+        <div class="feature-icon">🤖</div>
+        <div class="feature-title">Gemini AI generation</div>
+        <div class="feature-desc">Prompts Gemini to write structured, ATS-optimised resume content based on the user's raw input.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📄</div>
+        <div class="feature-title">Automatic PDF creation</div>
+        <div class="feature-desc">Resume content is passed to PDF.co API and returned as a print-ready, downloadable document.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">📧</div>
+        <div class="feature-title">Gmail automation</div>
+        <div class="feature-desc">The finished PDF is attached and delivered to the user's inbox without any manual step.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">⚡</div>
+        <div class="feature-title">Webhook-triggered</div>
+        <div class="feature-desc">Any form tool, frontend, or API can fire the workflow — no n8n UI interaction required after setup.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🎯</div>
+        <div class="feature-title">ATS-friendly format</div>
+        <div class="feature-desc">Output is structured for keyword scanning by applicant tracking systems — no tables, clean hierarchy.</div>
+      </div>
+      <div class="feature">
+        <div class="feature-icon">🧩</div>
+        <div class="feature-title">Modular nodes</div>
+        <div class="feature-desc">Swap Gemini for another model, or Gmail for SendGrid, without touching the rest of the pipeline.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAYLOAD -->
+  <section class="section" id="payload">
+    <p class="section-label">API</p>
+    <h2 class="section-title">Input & output</h2>
+    <p class="section-desc">POST one JSON object to your webhook URL. Four deliverables come back automatically.</p>
+
+    <div class="two-col">
+      <div>
+        <div class="code-block">
+          <div class="code-hdr">
+            <div class="dots"><span></span><span></span><span></span></div>
+            <span class="code-hdr-name">payload.json</span>
+          </div>
+          <pre><span class="p">{</span>
+  <span class="k">"name"</span>: <span class="s">"Karthikeya"</span>,
+  <span class="k">"email"</span>: <span class="s">"user@gmail.com"</span>,
+  <span class="k">"education"</span>: <span class="s">"B.Tech CSE"</span>,
+  <span class="k">"skills"</span>: <span class="s">"Java, Python, SQL"</span>,
+  <span class="k">"projects"</span>: <span class="s">"AI Resume Builder"</span>,
+  <span class="k">"experience"</span>: <span class="s">"Fresher"</span>
+<span class="p">}</span></pre>
+        </div>
+      </div>
+
+      <div class="output-list">
+        <div class="output-item">
+          <div class="output-dot" style="background:var(--accent)"></div>
+          <div><div class="output-title">Professional resume</div><div class="output-desc">AI-written content tailored to the provided skills and experience</div></div>
+        </div>
+        <div class="output-item">
+          <div class="output-dot" style="background:var(--blue)"></div>
+          <div><div class="output-title">ATS-friendly format</div><div class="output-desc">Structured for keyword scanning by recruitment systems</div></div>
+        </div>
+        <div class="output-item">
+          <div class="output-dot" style="background:var(--amber)"></div>
+          <div><div class="output-title">PDF document</div><div class="output-desc">Print-ready, uploadable to any job portal</div></div>
+        </div>
+        <div class="output-item">
+          <div class="output-dot" style="background:var(--purple)"></div>
+          <div><div class="output-title">Email delivery</div><div class="output-desc">PDF sent to the address in the payload via Gmail</div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCREENSHOTS -->
+  <section class="section" id="screenshots">
+    <p class="section-label">Screenshots</p>
+    <h2 class="section-title">Workflow & output</h2>
+    <p class="section-desc">Add your images to the <code style="font-family:var(--mono);font-size:13px;color:var(--accent)">screenshots/</code> folder and they'll appear here.</p>
+
+    <div class="screenshot-grid">
+      <div class="screenshot-card">
+        <div class="screenshot-label">workflow.png</div>
+        <div class="screenshot-placeholder">
+          <span>🔗</span>
+          Add screenshots/workflow.png
+        </div>
+      </div>
+      <div class="screenshot-card">
+        <div class="screenshot-label">generated-resume.png</div>
+        <div class="screenshot-placeholder">
+          <span>📄</span>
+          Add screenshots/generated-resume.png
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STACK -->
+  <section class="section" id="stack">
+    <p class="section-label">Tech stack</p>
+    <h2 class="section-title">Built with</h2>
+    <p class="section-desc" style="margin-bottom:1.5rem">Seven tools, each doing one job well.</p>
+
+    <div class="stack-pills">
+      <div class="pill"><span class="pill-dot" style="background:#FF6B35"></span>n8n</div>
+      <div class="pill"><span class="pill-dot" style="background:#4285F4"></span>Google Gemini AI</div>
+      <div class="pill"><span class="pill-dot" style="background:var(--amber)"></span>JavaScript</div>
+      <div class="pill"><span class="pill-dot" style="background:var(--coral)"></span>PDF.co API</div>
+      <div class="pill"><span class="pill-dot" style="background:var(--blue)"></span>REST APIs</div>
+      <div class="pill"><span class="pill-dot" style="background:var(--accent)"></span>Gmail</div>
+      <div class="pill"><span class="pill-dot" style="background:var(--purple)"></span>Webhooks</div>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section class="section">
+    <p class="section-label">Skills demonstrated</p>
+    <h2 class="section-title">What this project covers</h2>
+    <p class="section-desc" style="margin-bottom:1.5rem">Spanning AI engineering, automation, and API integration.</p>
+
+    <div class="skills-grid">
+      <div class="skill-item">Prompt engineering</div>
+      <div class="skill-item">Gemini AI integration</div>
+      <div class="skill-item">Workflow automation with n8n</div>
+      <div class="skill-item">JavaScript data transformation</div>
+      <div class="skill-item">REST API integration</div>
+      <div class="skill-item">PDF generation automation</div>
+      <div class="skill-item">Gmail API integration</div>
+      <div class="skill-item">Webhook development</div>
+      <div class="skill-item">Event-driven architecture</div>
+      <div class="skill-item">JSON data processing</div>
+    </div>
+  </section>
+
+  <!-- FUTURE -->
+  <section class="section">
+    <p class="section-label">Roadmap</p>
+    <h2 class="section-title">Future enhancements</h2>
+    <p class="section-desc" style="margin-bottom:1.5rem">Planned additions to expand the workflow's capabilities.</p>
+
+    <div class="future-grid">
+      <div class="future-item">Multiple resume templates</div>
+      <div class="future-item">Resume score analysis</div>
+      <div class="future-item">Job description matching</div>
+      <div class="future-item">ATS optimisation tips</div>
+      <div class="future-item">Web app frontend</div>
+      <div class="future-item">LinkedIn profile import</div>
+      <div class="future-item">Resume analytics dashboard</div>
+      <div class="future-item">Multi-language support</div>
+    </div>
+  </section>
+
+  <!-- AUTHOR -->
+  <section class="section">
+    <div class="author-card">
+      <div class="avatar">K</div>
+      <div style="flex:1">
+        <div class="author-name">Karthikeya</div>
+        <div class="author-role">Computer Science & Engineering · AI & Automation Enthusiast</div>
+        <div class="tag-row">
+          <span class="tag" style="background:var(--adim);color:var(--accent)">n8n</span>
+          <span class="tag" style="background:var(--bdim);color:var(--blue)">Gemini AI</span>
+          <span class="tag" style="background:var(--adim2);color:var(--amber)">JavaScript</span>
+          <span class="tag" style="background:var(--pdim);color:var(--purple)">Automation</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>ai-resume-builder-n8n · MIT License</footer>
+
+</body>
+</html>
