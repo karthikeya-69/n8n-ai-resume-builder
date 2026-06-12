@@ -508,7 +508,7 @@ border-radius:0;
 
 <div class="field">
 <label for="fullName">Full Name</label>
-<input type="text" id="fullName" placeholder="e.g. Karthikeya">
+<input type="text" id="fullName" placeholder="e.g. Siva">
 </div>
 
 <div class="row2">
@@ -518,14 +518,14 @@ border-radius:0;
 </div>
 <div class="field">
 <label for="email">Email</label>
-<input type="email" id="email" placeholder="you@example.com">
+<input type="email" id="email" placeholder="siva@gmail.com">
 </div>
 </div>
 
 <div class="row2">
 <div class="field">
 <label for="phone">Phone</label>
-<input type="text" id="phone" placeholder="+91 90000 00000">
+<input type="text" id="phone" placeholder="+91 12345 67890">
 </div>
 <div class="field">
 <label for="location">Location</label>
@@ -666,11 +666,11 @@ wrap.innerHTML = `
 <div class="row2">
 <div class="field">
 <label>Years</label>
-<input type="text" class="edu-years" placeholder="e.g. 2022 - 2026" value="${data.years||''}">
+<input type="text" class="edu-years" placeholder="e.g. 2021 - 2025" value="${data.years||''}">
 </div>
 <div class="field">
 <label>Score / Notes</label>
-<input type="text" class="edu-notes" placeholder="e.g. CGPA 8.7" value="${data.notes||''}">
+<input type="text" class="edu-notes" placeholder="e.g. CGPA 8.3" value="${data.notes||''}">
 </div>
 </div>
 `;
@@ -699,12 +699,12 @@ wrap.innerHTML = `
 </div>
 <div class="field">
 <label>Company</label>
-<input type="text" class="exp-company" placeholder="e.g. Acme Corp" value="${data.company||''}">
+<input type="text" class="exp-company" placeholder="e.g. ABC Corp" value="${data.company||''}">
 </div>
 </div>
 <div class="field">
 <label>Duration</label>
-<input type="text" class="exp-duration" placeholder="e.g. Jun 2025 - Aug 2025" value="${data.duration||''}">
+<input type="text" class="exp-duration" placeholder="e.g. Jun 2024 - Aug 2024" value="${data.duration||''}">
 </div>
 <div class="field">
 <label>Highlights</label>
@@ -939,48 +939,52 @@ renderPreview();
 
 /* ---------- ACTIONS ---------- */
 
-document.getElementById('downloadBtn').addEventListener('click', ()=>{
-window.print();
-});
-
-document.getElementById('clearBtn').addEventListener('click', ()=>{
-if(!confirm('Clear all fields and start over?')) return;
-['fullName','jobTitle','email','phone','location','links','summary','skills'].forEach(id=>{
-document.getElementById(id).value = '';
-});
-document.getElementById('educationList').innerHTML = '';
-document.getElementById('experienceList').innerHTML = '';
-document.getElementById('projectsList').innerHTML = '';
-renderPreview();
-});
-
 document.getElementById('sampleBtn').addEventListener('click', ()=>{
-document.getElementById('fullName').value = 'Karthikeya';
-document.getElementById('jobTitle').value = 'AI & Automation Engineer';
-document.getElementById('email').value = 'user@gmail.com';
-document.getElementById('phone').value = '+91 90000 00000';
-document.getElementById('location').value = 'Hyderabad, India';
-document.getElementById('links').value = 'linkedin.com/in/karthikeya, github.com/karthikeya';
-document.getElementById('summary').value = '';
-document.getElementById('skills').value = 'Java, Python, SQL, n8n, JavaScript, REST APIs, Gemini AI';
+
+document.getElementById('fullName').value = 'Siva';
+document.getElementById('jobTitle').value = 'AI Engineer';
+document.getElementById('email').value = 'siva@gmail.com';
+document.getElementById('phone').value = '+91 1234567890';
+document.getElementById('location').value = 'Vijayawada, India';
+document.getElementById('links').value = 'linkedin.com/in/ram, github.com/ram';
+
+document.getElementById('summary').value =
+'AI Engineer fresher passionate about Machine Learning, Deep Learning, NLP and Generative AI. Skilled in building AI-powered applications and solving real-world problems using data-driven approaches.';
+
+document.getElementById('skills').value =
+'Python, Machine Learning, Deep Learning, TensorFlow, PyTorch, NLP, Generative AI, SQL, Git';
 
 document.getElementById('educationList').innerHTML = '';
 document.getElementById('experienceList').innerHTML = '';
 document.getElementById('projectsList').innerHTML = '';
 
-addEducationEntry({degree:'B.Tech, Computer Science & Engineering', school:'ABC University', years:'2022 - 2026', notes:'CGPA 8.7 / 10'});
-addExperienceEntry({title:'Automation Intern', company:'Acme Corp', duration:'Jun 2025 - Aug 2025', desc:'Built n8n workflows to automate internal reporting\nIntegrated Gemini AI for content generation tasks\nReduced manual data entry time by 60%'});
-addProjectEntry({title:'AI Resume Builder', tech:'n8n, Gemini AI, Gmail API, PDF Generation API', desc:'Designed an end-to-end workflow that generates ATS-friendly resumes\nAutomated PDF creation and email delivery to users'});
+addEducationEntry({
+degree:'B.Tech Artificial Intelligence',
+school:'University',
+years:'2021 - 2025',
+notes:'CGPA 8.3 / 10'
+});
+
+addProjectEntry({
+title:'AI Resume Builder',
+tech:'Python, Gemini AI, HTML, CSS, JavaScript',
+desc:'Built an AI-powered resume builder\nGenerated ATS-friendly resumes automatically\nIntegrated AI for resume enhancement'
+});
+
+addProjectEntry({
+title:'Student Performance Prediction',
+tech:'Python, Machine Learning, Scikit-learn',
+desc:'Developed ML model for prediction\nPerformed data preprocessing and feature engineering\nAchieved high prediction accuracy'
+});
 
 renderPreview();
+
 });
+
 
 /* ---------- INIT ---------- */
 
-addEducationEntry();
-addExperienceEntry();
-addProjectEntry();
-renderPreview();
+sampleBtn();
 
 </script>
 
