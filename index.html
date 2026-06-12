@@ -3,514 +3,1331 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AI Resume Builder · Karthikeya</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0b1410">
 
-:root {
-  --bg:       #0d0f11;
-  --bg2:      #13161a;
-  --bg3:      #1a1e24;
-  --border:   rgba(255,255,255,0.08);
-  --border2:  rgba(255,255,255,0.14);
-  --text:     #e8eaed;
-  --muted:    #8b9099;
-  --accent:   #00e5a0;
-  --accent2:  #00b87d;
-  --adim:     rgba(0,229,160,0.10);
-  --aglow:    rgba(0,229,160,0.20);
-  --blue:     #4f9cf9;
-  --bdim:     rgba(79,156,249,0.10);
-  --amber:    #f5a623;
-  --adim2:    rgba(245,166,35,0.10);
-  --coral:    #ff6b6b;
-  --cdim:     rgba(255,107,107,0.10);
-  --purple:   #a78bfa;
-  --pdim:     rgba(167,139,250,0.10);
-  --font:     'Inter', system-ui, sans-serif;
-  --mono:     'JetBrains Mono', monospace;
-  --r:        10px;
-  --rl:       16px;
+<title>AI Resume Builder — n8n + Gemini AI</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Space Grotesk',sans-serif;
 }
 
-html { scroll-behavior: smooth; }
-body { background: var(--bg); color: var(--text); font-family: var(--font); font-size: 15px; line-height: 1.7; -webkit-font-smoothing: antialiased; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
-img { width: 100%; border-radius: var(--r); display: block; }
+html{
+scroll-behavior:smooth;
+background-color:#0b1410;
+color-scheme:dark;
+}
+
+:root{
+--bg:#0b1410;
+--card:#101c17;
+--card2:#16241e;
+--accent:#5eead4;
+--accent2:#fbbf24;
+--paper:#f7f5ee;
+--paper-ink:#1f2a24;
+--text:#eef7f3;
+--muted:#8aa39a;
+--border:#23362e;
+}
+
+body{
+background:var(--bg);
+color:var(--text);
+overflow-x:hidden;
+}
 
 /* NAV */
-nav {
-  position: sticky; top: 0; z-index: 100;
-  background: rgba(13,15,17,0.88); backdrop-filter: blur(12px);
-  border-bottom: 1px solid var(--border);
-  padding: 0 2rem; height: 56px;
-  display: flex; align-items: center; justify-content: space-between;
+nav{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+display:flex;
+justify-content:space-between;
+align-items:center;
+padding:18px 8%;
+background:rgba(11,20,16,.9);
+backdrop-filter:blur(12px);
+border-bottom:1px solid var(--border);
+z-index:1000;
 }
-.nav-brand { font-family: var(--mono); font-size: 13px; font-weight: 500; color: var(--accent); }
-.nav-links { display: flex; gap: 1.5rem; }
-.nav-links a { font-size: 13px; color: var(--muted); transition: color .2s; }
-.nav-links a:hover { color: var(--text); text-decoration: none; }
-@media(max-width:600px){ .nav-links { display: none; } }
+
+.logo{
+font-size:1.2rem;
+font-weight:700;
+color:var(--accent);
+display:flex;
+align-items:center;
+gap:8px;
+}
+
+nav ul{
+display:flex;
+list-style:none;
+gap:25px;
+}
+
+nav a{
+color:var(--muted);
+text-decoration:none;
+transition:.3s;
+}
+
+nav a:hover{
+color:var(--accent);
+}
 
 /* HERO */
-.hero {
-  text-align: center;
-  padding: 5rem 2rem 4.5rem;
-  background: linear-gradient(160deg, #0d0f11 0%, #111827 50%, #0d0f11 100%);
-  position: relative; overflow: hidden;
+.hero{
+min-height:80vh;
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:120px 20px 60px;
+position:relative;
+background:
+radial-gradient(circle at 20% 20%, rgba(94,234,212,0.08), transparent 40%),
+radial-gradient(circle at 80% 70%, rgba(251,191,36,0.06), transparent 40%);
 }
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse 70% 50% at 50% 0%, var(--aglow), transparent);
-  pointer-events: none;
-}
-.hero-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: var(--adim); border: 1px solid rgba(0,229,160,0.22);
-  border-radius: 999px; padding: 4px 14px;
-  font-size: 12px; font-family: var(--mono); color: var(--accent);
-  margin-bottom: 1.75rem; letter-spacing: .04em;
-}
-.hero-badge::before { content: '●'; font-size: 8px; }
-.hero h1 {
-  font-size: clamp(2rem, 5vw, 3.25rem);
-  font-weight: 600; line-height: 1.15; letter-spacing: -.02em;
-  color: #fff; margin-bottom: 1.25rem;
-}
-.hero h1 span { color: var(--accent); }
-.hero-sub { font-size: 1.05rem; color: var(--muted); max-width: 580px; margin: 0 auto 2.5rem; line-height: 1.8; }
-.cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-.btn {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 10px 22px; border-radius: var(--r);
-  font-size: 14px; font-weight: 500; cursor: pointer; transition: all .2s; border: none;
-}
-.btn-primary { background: var(--accent); color: #000; }
-.btn-primary:hover { background: #1ffcb4; text-decoration: none; }
-.btn-ghost { background: transparent; color: var(--text); border: 1px solid var(--border2); }
-.btn-ghost:hover { background: var(--bg3); text-decoration: none; }
 
-/* SECTION WRAPPER */
-.container { max-width: 960px; margin: 0 auto; padding: 0 2rem; }
-.section { padding: 4.5rem 0; border-top: 1px solid var(--border); }
-.section-label { font-family: var(--mono); font-size: 11px; color: var(--accent); letter-spacing: .1em; text-transform: uppercase; margin-bottom: .4rem; }
-.section-title { font-size: 1.6rem; font-weight: 600; color: #fff; letter-spacing: -.02em; margin-bottom: .5rem; }
-.section-desc { color: var(--muted); font-size: .95rem; max-width: 520px; margin-bottom: 2rem; }
+.hero-content{
+max-width:880px;
+}
 
-/* METRICS */
-.metrics-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; }
-.metric { background: var(--bg2); padding: 1.75rem 1.25rem; text-align: center; transition: background .2s; }
-.metric:hover { background: var(--bg3); }
-.metric-val { font-size: 2rem; font-weight: 600; color: var(--accent); line-height: 1; margin-bottom: 6px; }
-.metric-label { font-size: 13px; color: var(--muted); }
+.eyebrow{
+display:inline-block;
+padding:6px 16px;
+border:1px solid var(--border);
+border-radius:30px;
+color:var(--accent);
+font-size:.85rem;
+letter-spacing:.08em;
+text-transform:uppercase;
+margin-bottom:25px;
+}
 
-/* WORKFLOW */
-.flow-wrap {
-  display: flex; align-items: stretch; gap: 0;
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--rl); overflow: hidden;
+.hero h1{
+font-family:'Source Serif 4', serif;
+font-weight:600;
+font-size:clamp(2.4rem,6vw,4.6rem);
+line-height:1.1;
+margin-bottom:20px;
 }
-.flow-step {
-  flex: 1; padding: 1.5rem 1.25rem;
-  border-right: 1px solid var(--border);
-  display: flex; flex-direction: column; gap: 6px;
-  position: relative; transition: background .2s;
+
+.hero span{
+color:var(--accent);
 }
-.flow-step:last-child { border-right: none; }
-.flow-step:hover { background: var(--bg3); }
-.flow-icon { font-size: 20px; margin-bottom: 4px; }
-.flow-name { font-size: 13px; font-weight: 600; color: #fff; }
-.flow-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
-.flow-arrow {
-  position: absolute; right: -9px; top: 50%; transform: translateY(-50%);
-  width: 18px; height: 18px; background: var(--bg2);
-  border: 1px solid var(--border2); border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; color: var(--muted); z-index: 2;
+
+.hero p{
+font-size:1.1rem;
+color:var(--muted);
+max-width:650px;
+margin:auto;
 }
-@media(max-width:700px){
-  .flow-wrap { flex-direction: column; }
-  .flow-step { border-right: none; border-bottom: 1px solid var(--border); }
-  .flow-step:last-child { border-bottom: none; }
-  .flow-arrow { display: none; }
+
+.hero-buttons{
+margin-top:35px;
+display:flex;
+justify-content:center;
+gap:15px;
+flex-wrap:wrap;
+}
+
+.btn{
+padding:14px 26px;
+border-radius:10px;
+text-decoration:none;
+font-weight:700;
+transition:.3s;
+border:1px solid transparent;
+cursor:pointer;
+font-size:1rem;
+}
+
+.primary{
+background:var(--accent);
+color:#0b1410;
+}
+
+.secondary{
+border:1px solid var(--border);
+color:var(--text);
+background:transparent;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+}
+
+/* SECTIONS */
+section{
+max-width:1300px;
+margin:auto;
+padding:60px 20px 90px;
+}
+
+.section-title{
+text-align:center;
+font-family:'Source Serif 4', serif;
+font-weight:600;
+font-size:2.2rem;
+margin-bottom:10px;
+}
+
+.section-sub{
+text-align:center;
+color:var(--muted);
+margin-bottom:40px;
+}
+
+/* BUILDER LAYOUT */
+.builder{
+display:grid;
+grid-template-columns:1.1fr 1fr;
+gap:24px;
+align-items:flex-start;
+}
+
+@media(max-width:980px){
+.builder{
+grid-template-columns:1fr;
+}
+}
+
+.panel{
+background:var(--card);
+border:1px solid var(--border);
+border-radius:18px;
+padding:24px;
+}
+
+.panel h3{
+font-size:1.05rem;
+margin-bottom:4px;
+}
+
+.panel-sub{
+color:var(--muted);
+font-size:.85rem;
+margin-bottom:18px;
+}
+
+.form-section{
+border-top:1px solid var(--border);
+padding-top:18px;
+margin-top:18px;
+}
+
+.form-section:first-of-type{
+border-top:none;
+padding-top:0;
+margin-top:0;
+}
+
+.form-section-head{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:12px;
+}
+
+.form-section-head h4{
+font-size:.95rem;
+text-transform:uppercase;
+letter-spacing:.06em;
+color:var(--accent);
+}
+
+.field{
+margin-bottom:14px;
+}
+
+.field label{
+display:block;
+font-size:.8rem;
+text-transform:uppercase;
+letter-spacing:.06em;
+color:var(--muted);
+margin-bottom:6px;
+}
+
+.field input,
+.field textarea,
+.field select{
+width:100%;
+padding:11px 13px;
+border-radius:8px;
+background:var(--card2);
+border:1px solid var(--border);
+color:var(--text);
+font-family:inherit;
+font-size:.92rem;
+resize:vertical;
+}
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+outline:none;
+border-color:var(--accent);
+}
+
+.field small{
+display:block;
+margin-top:5px;
+color:var(--muted);
+font-size:.75rem;
+}
+
+.row2{
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+@media(max-width:520px){
+.row2{
+grid-template-columns:1fr;
+}
+}
+
+.entry-card{
+background:var(--card2);
+border:1px solid var(--border);
+border-radius:12px;
+padding:16px;
+margin-bottom:14px;
+position:relative;
+}
+
+.entry-card .remove-btn{
+position:absolute;
+top:10px;
+right:10px;
+background:transparent;
+border:1px solid var(--border);
+color:var(--muted);
+border-radius:6px;
+width:28px;
+height:28px;
+cursor:pointer;
+font-size:.9rem;
+line-height:1;
+}
+
+.entry-card .remove-btn:hover{
+border-color:#ff6b6b;
+color:#ff6b6b;
+}
+
+.add-btn{
+width:100%;
+padding:11px;
+border-radius:8px;
+border:1px dashed var(--border);
+background:transparent;
+color:var(--accent);
+font-weight:600;
+cursor:pointer;
+font-size:.88rem;
+transition:.2s;
+}
+
+.add-btn:hover{
+border-color:var(--accent);
+background:rgba(94,234,212,0.06);
+}
+
+.builder-actions{
+display:flex;
+gap:10px;
+margin-top:22px;
+flex-wrap:wrap;
+}
+
+.builder-actions .btn{
+flex:1;
+min-width:140px;
+text-align:center;
+font-size:.92rem;
+padding:13px 18px;
+}
+
+/* PREVIEW */
+.preview-panel{
+position:sticky;
+top:90px;
+}
+
+.preview-toolbar{
+display:flex;
+justify-content:space-between;
+align-items:center;
+margin-bottom:14px;
+gap:10px;
+flex-wrap:wrap;
+}
+
+.preview-toolbar .ats{
+display:flex;
+align-items:center;
+gap:10px;
+font-size:.85rem;
+color:var(--muted);
+}
+
+.ats-num{
+font-weight:700;
+color:var(--accent);
+font-size:1.1rem;
+}
+
+.template-select{
+display:flex;
+gap:8px;
+}
+
+.template-select button{
+padding:8px 14px;
+border-radius:8px;
+border:1px solid var(--border);
+background:var(--card2);
+color:var(--muted);
+font-size:.8rem;
+cursor:pointer;
+transition:.2s;
+}
+
+.template-select button.active{
+border-color:var(--accent);
+color:var(--accent);
+}
+
+.resume-paper{
+background:var(--paper);
+color:var(--paper-ink);
+border-radius:6px;
+padding:36px;
+font-family:'Source Serif 4', serif;
+box-shadow:0 20px 50px rgba(0,0,0,.4);
+min-height:600px;
+font-size:.92rem;
+line-height:1.55;
+}
+
+.resume-paper.tpl-modern{
+font-family:'Space Grotesk',sans-serif;
+}
+
+.resume-paper .r-name{
+font-size:1.7rem;
+font-weight:700;
+margin-bottom:2px;
+}
+
+.resume-paper.tpl-modern .r-name{
+color:#0e7c66;
+}
+
+.resume-paper .r-title{
+font-size:.95rem;
+color:#5b6b63;
+margin-bottom:6px;
+}
+
+.resume-paper .r-contact{
+font-size:.78rem;
+color:#5b6b63;
+margin-bottom:16px;
+font-family:'Space Grotesk',sans-serif;
+}
+
+.resume-paper h4{
+font-size:.8rem;
+text-transform:uppercase;
+letter-spacing:.1em;
+border-bottom:1px solid #d8d4c4;
+padding-bottom:5px;
+margin:16px 0 8px;
+color:#3a4a42;
+}
+
+.resume-paper.tpl-modern h4{
+color:#0e7c66;
+border-bottom-color:#cfe9e2;
+}
+
+.resume-paper .r-empty{
+color:#9aa79f;
+font-style:italic;
+font-size:.85rem;
+}
+
+.skill-tags{
+display:flex;
+flex-wrap:wrap;
+gap:6px;
+}
+
+.skill-tag{
+padding:3px 11px;
+border-radius:20px;
+background:#e8e4d4;
+font-size:.75rem;
+font-family:'Space Grotesk',sans-serif;
+}
+
+.resume-paper.tpl-modern .skill-tag{
+background:#d6f3ec;
+color:#0e7c66;
+}
+
+.entry-block{
+margin-bottom:10px;
+}
+
+.entry-block .e-head{
+display:flex;
+justify-content:space-between;
+font-weight:600;
+font-size:.9rem;
+}
+
+.entry-block .e-sub{
+font-size:.8rem;
+color:#5b6b63;
+margin-bottom:3px;
+}
+
+.entry-block ul{
+margin:4px 0 0 18px;
+}
+
+.entry-block li{
+font-size:.83rem;
+font-family:'Space Grotesk',sans-serif;
 }
 
 /* FEATURES */
-.features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1px; background: var(--border); border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; }
-.feature { background: var(--bg2); padding: 1.75rem; transition: background .2s; }
-.feature:hover { background: var(--bg3); }
-.feature-icon { font-size: 22px; margin-bottom: .75rem; }
-.feature-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 6px; }
-.feature-desc { font-size: 13px; color: var(--muted); line-height: 1.6; }
-
-/* PAYLOAD */
-.two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-@media(max-width:680px){ .two-col { grid-template-columns: 1fr; } }
-.code-block { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; }
-.code-hdr { display: flex; align-items: center; justify-content: space-between; padding: 10px 16px; border-bottom: 1px solid var(--border); background: var(--bg3); }
-.code-hdr-name { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-.dots { display: flex; gap: 5px; }
-.dots span { width: 9px; height: 9px; border-radius: 50%; background: var(--border2); }
-pre { padding: 1.25rem 1.5rem; font-family: var(--mono); font-size: 13px; line-height: 1.7; overflow-x: auto; color: var(--text); }
-.k { color: var(--blue); }
-.s { color: var(--accent); }
-.p { color: var(--muted); }
-
-.output-list { display: flex; flex-direction: column; gap: 10px; }
-.output-item { display: flex; align-items: flex-start; gap: 12px; padding: 14px; border-radius: var(--r); border: 1px solid var(--border); background: var(--bg2); }
-.output-dot { width: 8px; height: 8px; border-radius: 50%; margin-top: 5px; flex-shrink: 0; }
-.output-title { font-size: 13px; font-weight: 600; color: #fff; margin-bottom: 2px; }
-.output-desc { font-size: 12px; color: var(--muted); }
-
-/* SCREENSHOTS */
-.screenshot-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
-@media(max-width:600px){ .screenshot-grid { grid-template-columns: 1fr; } }
-.screenshot-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--rl); overflow: hidden; }
-.screenshot-label { padding: 12px 16px; font-size: 13px; font-weight: 500; color: var(--muted); border-bottom: 1px solid var(--border); font-family: var(--mono); }
-.screenshot-card img { border-radius: 0; }
-.screenshot-placeholder { padding: 3rem 2rem; text-align: center; color: var(--muted); font-size: 13px; background: var(--bg3); }
-.screenshot-placeholder span { display: block; font-size: 2rem; margin-bottom: .5rem; }
-
-/* STACK */
-.stack-pills { display: flex; flex-wrap: wrap; gap: 10px; }
-.pill {
-  display: inline-flex; align-items: center; gap: 8px;
-  padding: 8px 16px; background: var(--bg2);
-  border: 1px solid var(--border); border-radius: 999px;
-  font-size: 13px; font-weight: 500; color: var(--text);
-  transition: border-color .2s, background .2s;
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+gap:20px;
 }
-.pill:hover { border-color: var(--border2); background: var(--bg3); }
-.pill-dot { width: 7px; height: 7px; border-radius: 50%; }
 
-/* SKILLS */
-.skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 10px; }
-.skill-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 16px; background: var(--bg2);
-  border: 1px solid var(--border); border-radius: var(--r);
-  font-size: 13px; color: var(--muted); transition: all .2s;
+.card{
+background:var(--card);
+border:1px solid var(--border);
+padding:25px;
+border-radius:18px;
+transition:.3s;
 }
-.skill-item:hover { border-color: var(--border2); color: var(--text); }
-.skill-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: .45; flex-shrink: 0; }
-.skill-item:hover::before { opacity: 1; }
 
-/* FUTURE */
-.future-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
-.future-item {
-  display: flex; align-items: center; gap: 10px;
-  padding: 12px 16px; background: var(--bg2);
-  border: 1px solid var(--border); border-radius: var(--r);
-  font-size: 13px; color: var(--muted); transition: all .2s;
+.card:hover{
+transform:translateY(-5px);
+border-color:var(--accent);
 }
-.future-item:hover { border-color: var(--accent2); color: var(--text); }
-.future-item::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); opacity: .35; flex-shrink: 0; transition: opacity .2s; }
-.future-item:hover::before { opacity: 1; }
 
-/* AUTHOR */
-.author-card {
-  background: var(--bg2); border: 1px solid var(--border);
-  border-radius: var(--rl); padding: 2rem;
-  display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap;
+.card .icon{
+font-size:1.6rem;
 }
-.avatar {
-  width: 56px; height: 56px; border-radius: 50%;
-  background: linear-gradient(135deg, var(--accent), var(--blue));
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; font-weight: 600; color: #000; flex-shrink: 0;
-}
-.author-name { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 2px; }
-.author-role { font-size: 13px; color: var(--muted); }
-.tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 8px; }
-.tag { font-size: 11px; padding: 3px 10px; border-radius: 999px; font-family: var(--mono); }
 
-footer { border-top: 1px solid var(--border); padding: 1.5rem 2rem; text-align: center; font-size: 12px; color: var(--muted); font-family: var(--mono); }
+.card h3{
+margin:14px 0 8px;
+font-size:1.05rem;
+}
+
+.card p{
+color:var(--muted);
+font-size:.9rem;
+line-height:1.5;
+}
+
+/* FLOW / ARCHITECTURE */
+.flow{
+display:flex;
+flex-direction:column;
+gap:0;
+max-width:600px;
+margin:auto;
+}
+
+.flow-step{
+display:flex;
+align-items:center;
+gap:18px;
+padding:18px 22px;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:14px;
+}
+
+.flow-step .num{
+width:36px;
+height:36px;
+border-radius:50%;
+background:rgba(94,234,212,0.1);
+color:var(--accent);
+display:flex;
+align-items:center;
+justify-content:center;
+font-weight:700;
+flex-shrink:0;
+}
+
+.flow-step .label{
+font-weight:600;
+}
+
+.flow-step .desc{
+color:var(--muted);
+font-size:.85rem;
+}
+
+.flow-arrow{
+text-align:center;
+color:var(--accent);
+padding:6px 0;
+font-size:1rem;
+}
+
+/* TECH TABLE */
+.tech-table{
+width:100%;
+border-collapse:collapse;
+background:var(--card);
+border:1px solid var(--border);
+border-radius:14px;
+overflow:hidden;
+}
+
+.tech-table th,
+.tech-table td{
+text-align:left;
+padding:14px 20px;
+border-bottom:1px solid var(--border);
+font-size:.95rem;
+}
+
+.tech-table th{
+color:var(--accent);
+text-transform:uppercase;
+font-size:.8rem;
+letter-spacing:.06em;
+background:var(--card2);
+}
+
+.tech-table tr:last-child td{
+border-bottom:none;
+}
+
+.tech-table td:first-child{
+font-weight:600;
+}
+
+/* FOOTER */
+footer{
+padding:40px 20px;
+text-align:center;
+border-top:1px solid var(--border);
+color:var(--muted);
+font-size:.9rem;
+}
+
+footer a{
+color:var(--accent);
+text-decoration:none;
+}
+
+/* PRINT */
+@media print{
+body *{
+visibility:hidden;
+}
+#resumePaper, #resumePaper *{
+visibility:visible;
+}
+#resumePaper{
+position:absolute;
+top:0;
+left:0;
+width:100%;
+box-shadow:none;
+border-radius:0;
+}
+}
 </style>
 </head>
 <body>
 
-<!-- NAV -->
 <nav>
-  <span class="nav-brand">ai-resume-builder</span>
-  <div class="nav-links">
-    <a href="#overview">Overview</a>
-    <a href="#workflow">Workflow</a>
-    <a href="#features">Features</a>
-    <a href="#payload">API</a>
-    <a href="#screenshots">Screenshots</a>
-  </div>
+<div class="logo">📄 AI Resume Builder</div>
+<ul>
+<li><a href="#builder">Build Resume</a></li>
+<li><a href="#features">Features</a></li>
+<li><a href="#architecture">Architecture</a></li>
+<li><a href="#stack">Tech Stack</a></li>
+</ul>
 </nav>
 
-<!-- HERO -->
 <section class="hero">
-  <div class="hero-badge">n8n · Gemini AI · PDF Automation</div>
-  <h1>AI Resume Builder<br><span>using n8n & Gemini AI</span></h1>
-  <p class="hero-sub">Generate professional ATS-friendly resumes automatically. Submit your details — AI writes the content, a PDF lands in your inbox.</p>
-  <div class="cta-row">
-    <a href="https://github.com/YOUR_USERNAME/AI-Resume-Builder" class="btn btn-primary">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.741 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z"/></svg>
-      View on GitHub
-    </a>
-    <a href="#workflow" class="btn btn-ghost">See architecture →</a>
-  </div>
+<div class="hero-content">
+<div class="eyebrow">n8n · Gemini AI · Gmail · PDF Generation</div>
+<h1>Build your own <span>ATS-friendly resume</span> — free, in your browser</h1>
+<p>
+Fill in your details on the left and watch your resume take shape on the
+right in real time. Pick a template, check your ATS score, and download
+it as a PDF when you're done.
+</p>
+<div class="hero-buttons">
+<a href="#builder" class="btn primary">Start Building</a>
+<a href="https://github.com" class="btn secondary">View on GitHub</a>
+</div>
+</div>
 </section>
 
-<div class="container">
+<section id="builder">
+<h2 class="section-title">Resume Builder</h2>
+<p class="section-sub">Everything you type updates the preview instantly. Nothing is uploaded — it all stays in your browser.</p>
 
-  <!-- OVERVIEW -->
-  <section class="section" id="overview">
-    <p class="section-label">Overview</p>
-    <h2 class="section-title">What is this project?</h2>
-    <p class="section-desc">An end-to-end automation workflow — from raw candidate data to a PDF resume delivered by email, with no manual steps in between.</p>
+<div class="builder">
 
-    <div class="metrics-grid">
-      <div class="metric"><div class="metric-val">6+</div><div class="metric-label">Workflow nodes</div></div>
-      <div class="metric"><div class="metric-val">3</div><div class="metric-label">Integrated APIs</div></div>
-      <div class="metric"><div class="metric-val">100%</div><div class="metric-label">Automated</div></div>
-      <div class="metric"><div class="metric-val">ATS</div><div class="metric-label">Optimised output</div></div>
-    </div>
-  </section>
+<!-- FORM PANEL -->
+<div class="panel">
+<h3>Your Details</h3>
+<div class="panel-sub">Add as many education, experience and project entries as you need.</div>
 
-  <!-- WORKFLOW -->
-  <section class="section" id="workflow">
-    <p class="section-label">Architecture</p>
-    <h2 class="section-title">Seven-stage pipeline</h2>
-    <p class="section-desc">Each n8n node has a single responsibility. Data flows in one direction — clean, auditable, easy to debug.</p>
+<!-- PERSONAL INFO -->
+<div class="form-section">
+<div class="form-section-head"><h4>Personal Info</h4></div>
 
-    <div class="flow-wrap">
-      <div class="flow-step">
-        <div class="flow-icon">📥</div>
-        <div class="flow-name">User input</div>
-        <div class="flow-desc">Name, email, skills, projects, experience</div>
-        <div class="flow-arrow">›</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-icon">🔗</div>
-        <div class="flow-name">Webhook</div>
-        <div class="flow-desc">n8n receives POST payload</div>
-        <div class="flow-arrow">›</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-icon">⚙️</div>
-        <div class="flow-name">Set fields</div>
-        <div class="flow-desc">Normalise & map variables</div>
-        <div class="flow-arrow">›</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-icon">🤖</div>
-        <div class="flow-name">Gemini AI</div>
-        <div class="flow-desc">Generate ATS resume content</div>
-        <div class="flow-arrow">›</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-icon">{ }</div>
-        <div class="flow-name">JS processing</div>
-        <div class="flow-desc">Parse & format AI output</div>
-        <div class="flow-arrow">›</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-icon">📄</div>
-        <div class="flow-name">PDF.co API</div>
-        <div class="flow-desc">Convert to PDF document</div>
-        <div class="flow-arrow">›</div>
-      </div>
-      <div class="flow-step">
-        <div class="flow-icon">✉️</div>
-        <div class="flow-name">Gmail delivery</div>
-        <div class="flow-desc">PDF sent to user inbox</div>
-      </div>
-    </div>
-  </section>
+<div class="field">
+<label for="fullName">Full Name</label>
+<input type="text" id="fullName" placeholder="e.g. Karthikeya">
+</div>
 
-  <!-- FEATURES -->
-  <section class="section" id="features">
-    <p class="section-label">Features</p>
-    <h2 class="section-title">What it does</h2>
-    <p class="section-desc">Built to be end-to-end — no manual steps, no copy-pasting between tools.</p>
+<div class="row2">
+<div class="field">
+<label for="jobTitle">Target Role / Title</label>
+<input type="text" id="jobTitle" placeholder="e.g. Software Engineer">
+</div>
+<div class="field">
+<label for="email">Email</label>
+<input type="email" id="email" placeholder="you@example.com">
+</div>
+</div>
 
-    <div class="features-grid">
-      <div class="feature">
-        <div class="feature-icon">🤖</div>
-        <div class="feature-title">Gemini AI generation</div>
-        <div class="feature-desc">Prompts Gemini to write structured, ATS-optimised resume content based on the user's raw input.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📄</div>
-        <div class="feature-title">Automatic PDF creation</div>
-        <div class="feature-desc">Resume content is passed to PDF.co API and returned as a print-ready, downloadable document.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">📧</div>
-        <div class="feature-title">Gmail automation</div>
-        <div class="feature-desc">The finished PDF is attached and delivered to the user's inbox without any manual step.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">⚡</div>
-        <div class="feature-title">Webhook-triggered</div>
-        <div class="feature-desc">Any form tool, frontend, or API can fire the workflow — no n8n UI interaction required after setup.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🎯</div>
-        <div class="feature-title">ATS-friendly format</div>
-        <div class="feature-desc">Output is structured for keyword scanning by applicant tracking systems — no tables, clean hierarchy.</div>
-      </div>
-      <div class="feature">
-        <div class="feature-icon">🧩</div>
-        <div class="feature-title">Modular nodes</div>
-        <div class="feature-desc">Swap Gemini for another model, or Gmail for SendGrid, without touching the rest of the pipeline.</div>
-      </div>
-    </div>
-  </section>
+<div class="row2">
+<div class="field">
+<label for="phone">Phone</label>
+<input type="text" id="phone" placeholder="+91 90000 00000">
+</div>
+<div class="field">
+<label for="location">Location</label>
+<input type="text" id="location" placeholder="City, Country">
+</div>
+</div>
 
-  <!-- PAYLOAD -->
-  <section class="section" id="payload">
-    <p class="section-label">API</p>
-    <h2 class="section-title">Input & output</h2>
-    <p class="section-desc">POST one JSON object to your webhook URL. Four deliverables come back automatically.</p>
+<div class="field">
+<label for="links">Links</label>
+<input type="text" id="links" placeholder="LinkedIn, GitHub, Portfolio (comma separated)">
+</div>
+</div>
 
-    <div class="two-col">
-      <div>
-        <div class="code-block">
-          <div class="code-hdr">
-            <div class="dots"><span></span><span></span><span></span></div>
-            <span class="code-hdr-name">payload.json</span>
-          </div>
-          <pre><span class="p">{</span>
-  <span class="k">"name"</span>: <span class="s">"Karthikeya"</span>,
-  <span class="k">"email"</span>: <span class="s">"user@gmail.com"</span>,
-  <span class="k">"education"</span>: <span class="s">"B.Tech CSE"</span>,
-  <span class="k">"skills"</span>: <span class="s">"Java, Python, SQL"</span>,
-  <span class="k">"projects"</span>: <span class="s">"AI Resume Builder"</span>,
-  <span class="k">"experience"</span>: <span class="s">"Fresher"</span>
-<span class="p">}</span></pre>
-        </div>
-      </div>
+<!-- SUMMARY -->
+<div class="form-section">
+<div class="form-section-head"><h4>Professional Summary</h4></div>
+<div class="field">
+<textarea id="summary" rows="3" placeholder="2-3 sentences about your background, strengths and goals. Leave blank and we'll draft one from your details."></textarea>
+<small>Tip: leave this empty to auto-generate a summary from your skills and experience.</small>
+</div>
+</div>
 
-      <div class="output-list">
-        <div class="output-item">
-          <div class="output-dot" style="background:var(--accent)"></div>
-          <div><div class="output-title">Professional resume</div><div class="output-desc">AI-written content tailored to the provided skills and experience</div></div>
-        </div>
-        <div class="output-item">
-          <div class="output-dot" style="background:var(--blue)"></div>
-          <div><div class="output-title">ATS-friendly format</div><div class="output-desc">Structured for keyword scanning by recruitment systems</div></div>
-        </div>
-        <div class="output-item">
-          <div class="output-dot" style="background:var(--amber)"></div>
-          <div><div class="output-title">PDF document</div><div class="output-desc">Print-ready, uploadable to any job portal</div></div>
-        </div>
-        <div class="output-item">
-          <div class="output-dot" style="background:var(--purple)"></div>
-          <div><div class="output-title">Email delivery</div><div class="output-desc">PDF sent to the address in the payload via Gmail</div></div>
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- SKILLS -->
+<div class="form-section">
+<div class="form-section-head"><h4>Skills</h4></div>
+<div class="field">
+<input type="text" id="skills" placeholder="e.g. Java, Python, SQL, n8n, REST APIs">
+<small>Comma separated. These appear as tags on your resume.</small>
+</div>
+</div>
 
-  <!-- SCREENSHOTS -->
-  <section class="section" id="screenshots">
-    <p class="section-label">Screenshots</p>
-    <h2 class="section-title">Workflow & output</h2>
-    <p class="section-desc">Add your images to the <code style="font-family:var(--mono);font-size:13px;color:var(--accent)">screenshots/</code> folder and they'll appear here.</p>
+<!-- EDUCATION -->
+<div class="form-section">
+<div class="form-section-head">
+<h4>Education</h4>
+</div>
+<div id="educationList"></div>
+<button class="add-btn" id="addEducation">+ Add Education</button>
+</div>
 
-    <div class="screenshot-grid">
-      <div class="screenshot-card">
-        <div class="screenshot-label">workflow.png</div>
-        <div class="screenshot-placeholder">
-          <span>🔗</span>
-          Add screenshots/workflow.png
-        </div>
-      </div>
-      <div class="screenshot-card">
-        <div class="screenshot-label">generated-resume.png</div>
-        <div class="screenshot-placeholder">
-          <span>📄</span>
-          Add screenshots/generated-resume.png
-        </div>
-      </div>
-    </div>
-  </section>
+<!-- EXPERIENCE -->
+<div class="form-section">
+<div class="form-section-head">
+<h4>Experience</h4>
+</div>
+<div id="experienceList"></div>
+<button class="add-btn" id="addExperience">+ Add Experience</button>
+</div>
 
-  <!-- STACK -->
-  <section class="section" id="stack">
-    <p class="section-label">Tech stack</p>
-    <h2 class="section-title">Built with</h2>
-    <p class="section-desc" style="margin-bottom:1.5rem">Seven tools, each doing one job well.</p>
+<!-- PROJECTS -->
+<div class="form-section">
+<div class="form-section-head">
+<h4>Projects</h4>
+</div>
+<div id="projectsList"></div>
+<button class="add-btn" id="addProject">+ Add Project</button>
+</div>
 
-    <div class="stack-pills">
-      <div class="pill"><span class="pill-dot" style="background:#FF6B35"></span>n8n</div>
-      <div class="pill"><span class="pill-dot" style="background:#4285F4"></span>Google Gemini AI</div>
-      <div class="pill"><span class="pill-dot" style="background:var(--amber)"></span>JavaScript</div>
-      <div class="pill"><span class="pill-dot" style="background:var(--coral)"></span>PDF.co API</div>
-      <div class="pill"><span class="pill-dot" style="background:var(--blue)"></span>REST APIs</div>
-      <div class="pill"><span class="pill-dot" style="background:var(--accent)"></span>Gmail</div>
-      <div class="pill"><span class="pill-dot" style="background:var(--purple)"></span>Webhooks</div>
-    </div>
-  </section>
-
-  <!-- SKILLS -->
-  <section class="section">
-    <p class="section-label">Skills demonstrated</p>
-    <h2 class="section-title">What this project covers</h2>
-    <p class="section-desc" style="margin-bottom:1.5rem">Spanning AI engineering, automation, and API integration.</p>
-
-    <div class="skills-grid">
-      <div class="skill-item">Prompt engineering</div>
-      <div class="skill-item">Gemini AI integration</div>
-      <div class="skill-item">Workflow automation with n8n</div>
-      <div class="skill-item">JavaScript data transformation</div>
-      <div class="skill-item">REST API integration</div>
-      <div class="skill-item">PDF generation automation</div>
-      <div class="skill-item">Gmail API integration</div>
-      <div class="skill-item">Webhook development</div>
-      <div class="skill-item">Event-driven architecture</div>
-      <div class="skill-item">JSON data processing</div>
-    </div>
-  </section>
-
-  <!-- FUTURE -->
-  <section class="section">
-    <p class="section-label">Roadmap</p>
-    <h2 class="section-title">Future enhancements</h2>
-    <p class="section-desc" style="margin-bottom:1.5rem">Planned additions to expand the workflow's capabilities.</p>
-
-    <div class="future-grid">
-      <div class="future-item">Multiple resume templates</div>
-      <div class="future-item">Resume score analysis</div>
-      <div class="future-item">Job description matching</div>
-      <div class="future-item">ATS optimisation tips</div>
-      <div class="future-item">Web app frontend</div>
-      <div class="future-item">LinkedIn profile import</div>
-      <div class="future-item">Resume analytics dashboard</div>
-      <div class="future-item">Multi-language support</div>
-    </div>
-  </section>
-
-  <!-- AUTHOR -->
-  <section class="section">
-    <div class="author-card">
-      <div class="avatar">K</div>
-      <div style="flex:1">
-        <div class="author-name">Karthikeya</div>
-        <div class="author-role">Computer Science & Engineering · AI & Automation Enthusiast</div>
-        <div class="tag-row">
-          <span class="tag" style="background:var(--adim);color:var(--accent)">n8n</span>
-          <span class="tag" style="background:var(--bdim);color:var(--blue)">Gemini AI</span>
-          <span class="tag" style="background:var(--adim2);color:var(--amber)">JavaScript</span>
-          <span class="tag" style="background:var(--pdim);color:var(--purple)">Automation</span>
-        </div>
-      </div>
-    </div>
-  </section>
+<div class="builder-actions">
+<button class="btn primary" id="downloadBtn">⬇ Download PDF</button>
+<button class="btn secondary" id="clearBtn">Clear All</button>
+<button class="btn secondary" id="sampleBtn">Load Sample</button>
+</div>
 
 </div>
 
-<footer>ai-resume-builder-n8n · MIT License</footer>
+<!-- PREVIEW PANEL -->
+<div class="preview-panel">
+
+<div class="preview-toolbar">
+<div class="ats">
+ATS Score: <span class="ats-num" id="atsNum">—</span>
+</div>
+<div class="template-select">
+<button class="active" data-tpl="classic">Classic</button>
+<button data-tpl="modern">Modern</button>
+</div>
+</div>
+
+<div class="resume-paper tpl-classic" id="resumePaper">
+
+<div class="r-name" id="pName">Your Name</div>
+<div class="r-title" id="pTitle"></div>
+<div class="r-contact" id="pContact"></div>
+
+<h4>Summary</h4>
+<p id="pSummary" class="r-empty">Your professional summary will appear here.</p>
+
+<h4>Skills</h4>
+<div class="skill-tags" id="pSkills"></div>
+
+<h4>Experience</h4>
+<div id="pExperience"><p class="r-empty">Add an experience entry to see it here.</p></div>
+
+<h4>Projects</h4>
+<div id="pProjects"><p class="r-empty">Add a project to see it here.</p></div>
+
+<h4>Education</h4>
+<div id="pEducation"><p class="r-empty">Add an education entry to see it here.</p></div>
+
+</div>
+
+</div>
+
+</div>
+</section>
+
+<section id="features">
+<h2 class="section-title">Features</h2>
+<p class="section-sub">Everything needed to go from raw details to a delivered resume.</p>
+
+<div class="grid">
+
+<div class="card">
+<div class="icon">✍️</div>
+<h3>Build It Yourself</h3>
+<p>Type your own details into the form and see your real resume update live — no AI guesswork needed.</p>
+</div>
+
+<div class="card">
+<div class="icon">📋</div>
+<h3>ATS-Friendly Formatting</h3>
+<p>A simple ATS score estimates how well your resume's content and structure suit applicant tracking systems.</p>
+</div>
+
+<div class="card">
+<div class="icon">🧾</div>
+<h3>One-Click PDF Download</h3>
+<p>Download your finished resume as a clean, print-ready PDF directly from your browser.</p>
+</div>
+
+<div class="card">
+<div class="icon">🎨</div>
+<h3>Switchable Templates</h3>
+<p>Toggle between a classic serif layout and a modern accent-colored layout instantly.</p>
+</div>
+
+<div class="card">
+<div class="icon">🤖</div>
+<h3>AI-Assisted Summary</h3>
+<p>Leave the summary blank and a tailored draft is generated from your skills, role and experience.</p>
+</div>
+
+<div class="card">
+<div class="icon">🔒</div>
+<h3>Private by Default</h3>
+<p>Everything runs in your browser — nothing you type is uploaded or stored anywhere.</p>
+</div>
+
+</div>
+</section>
+
+<section id="architecture">
+<h2 class="section-title">System Architecture</h2>
+<p class="section-sub">How the full automated workflow works behind the scenes.</p>
+
+<div class="flow">
+
+<div class="flow-step">
+<div class="num">1</div>
+<div>
+<div class="label">User Input</div>
+<div class="desc">Candidate submits name, email, education, skills, projects and experience.</div>
+</div>
+</div>
+
+<div class="flow-arrow">↓</div>
+
+<div class="flow-step">
+<div class="num">2</div>
+<div>
+<div class="label">Webhook</div>
+<div class="desc">n8n webhook receives the submitted JSON payload.</div>
+</div>
+</div>
+
+<div class="flow-arrow">↓</div>
+
+<div class="flow-step">
+<div class="num">3</div>
+<div>
+<div class="label">Set Fields</div>
+<div class="desc">Incoming data is normalized and mapped to the fields the AI prompt expects.</div>
+</div>
+</div>
+
+<div class="flow-arrow">↓</div>
+
+<div class="flow-step">
+<div class="num">4</div>
+<div>
+<div class="label">Gemini AI</div>
+<div class="desc">Generates ATS-friendly resume content from the structured input.</div>
+</div>
+</div>
+
+<div class="flow-arrow">↓</div>
+
+<div class="flow-step">
+<div class="num">5</div>
+<div>
+<div class="label">JavaScript Processing</div>
+<div class="desc">AI output is cleaned, parsed and formatted for document generation.</div>
+</div>
+</div>
+
+<div class="flow-arrow">↓</div>
+
+<div class="flow-step">
+<div class="num">6</div>
+<div>
+<div class="label">PDF Generation API</div>
+<div class="desc">Formatted resume content is rendered into a polished PDF document.</div>
+</div>
+</div>
+
+<div class="flow-arrow">↓</div>
+
+<div class="flow-step">
+<div class="num">7</div>
+<div>
+<div class="label">Email Delivery</div>
+<div class="desc">The final PDF resume is sent automatically to the user's inbox via Gmail.</div>
+</div>
+</div>
+
+</div>
+</section>
+
+<section id="stack">
+<h2 class="section-title">Tech Stack</h2>
+<p class="section-sub">Tools and services powering the workflow.</p>
+
+<table class="tech-table">
+<tr><th>Technology</th><th>Purpose</th></tr>
+<tr><td>n8n</td><td>Workflow Automation</td></tr>
+<tr><td>Gemini AI</td><td>Resume Content Generation</td></tr>
+<tr><td>JavaScript</td><td>Data Processing</td></tr>
+<tr><td>REST APIs</td><td>External Integrations</td></tr>
+<tr><td>PDF Generation API</td><td>PDF Creation</td></tr>
+<tr><td>Gmail</td><td>Email Automation</td></tr>
+<tr><td>Webhooks</td><td>Data Collection</td></tr>
+</table>
+
+</section>
+
+<footer>
+📄 AI Resume Builder • Built with n8n + Gemini AI + Gmail API — by Karthikeya
+</footer>
+
+<script>
+
+let entryId = 0;
+
+function makeEntryId(prefix){
+entryId += 1;
+return prefix + '_' + entryId;
+}
+
+/* ---------- EDUCATION ---------- */
+
+function addEducationEntry(data){
+data = data || {};
+const id = makeEntryId('edu');
+const wrap = document.createElement('div');
+wrap.className = 'entry-card';
+wrap.dataset.id = id;
+wrap.innerHTML = `
+<button class="remove-btn" title="Remove">✕</button>
+<div class="row2">
+<div class="field">
+<label>Degree / Course</label>
+<input type="text" class="edu-degree" placeholder="e.g. B.Tech, Computer Science" value="${data.degree||''}">
+</div>
+<div class="field">
+<label>Institution</label>
+<input type="text" class="edu-school" placeholder="e.g. ABC University" value="${data.school||''}">
+</div>
+</div>
+<div class="row2">
+<div class="field">
+<label>Years</label>
+<input type="text" class="edu-years" placeholder="e.g. 2022 - 2026" value="${data.years||''}">
+</div>
+<div class="field">
+<label>Score / Notes</label>
+<input type="text" class="edu-notes" placeholder="e.g. CGPA 8.7" value="${data.notes||''}">
+</div>
+</div>
+`;
+document.getElementById('educationList').appendChild(wrap);
+wrap.querySelector('.remove-btn').addEventListener('click', ()=>{
+wrap.remove();
+renderPreview();
+});
+wrap.querySelectorAll('input').forEach(i=>i.addEventListener('input', renderPreview));
+}
+
+/* ---------- EXPERIENCE ---------- */
+
+function addExperienceEntry(data){
+data = data || {};
+const id = makeEntryId('exp');
+const wrap = document.createElement('div');
+wrap.className = 'entry-card';
+wrap.dataset.id = id;
+wrap.innerHTML = `
+<button class="remove-btn" title="Remove">✕</button>
+<div class="row2">
+<div class="field">
+<label>Job Title</label>
+<input type="text" class="exp-title" placeholder="e.g. Software Engineering Intern" value="${data.title||''}">
+</div>
+<div class="field">
+<label>Company</label>
+<input type="text" class="exp-company" placeholder="e.g. Acme Corp" value="${data.company||''}">
+</div>
+</div>
+<div class="field">
+<label>Duration</label>
+<input type="text" class="exp-duration" placeholder="e.g. Jun 2025 - Aug 2025" value="${data.duration||''}">
+</div>
+<div class="field">
+<label>Highlights</label>
+<textarea class="exp-desc" rows="3" placeholder="One per line, e.g.&#10;Built X using Y&#10;Improved Z by 20%">${data.desc||''}</textarea>
+<small>One bullet point per line.</small>
+</div>
+`;
+document.getElementById('experienceList').appendChild(wrap);
+wrap.querySelector('.remove-btn').addEventListener('click', ()=>{
+wrap.remove();
+renderPreview();
+});
+wrap.querySelectorAll('input, textarea').forEach(i=>i.addEventListener('input', renderPreview));
+}
+
+/* ---------- PROJECTS ---------- */
+
+function addProjectEntry(data){
+data = data || {};
+const id = makeEntryId('proj');
+const wrap = document.createElement('div');
+wrap.className = 'entry-card';
+wrap.dataset.id = id;
+wrap.innerHTML = `
+<button class="remove-btn" title="Remove">✕</button>
+<div class="field">
+<label>Project Title</label>
+<input type="text" class="proj-title" placeholder="e.g. AI Resume Builder" value="${data.title||''}">
+</div>
+<div class="field">
+<label>Tech Used</label>
+<input type="text" class="proj-tech" placeholder="e.g. n8n, Gemini AI, Gmail API" value="${data.tech||''}">
+</div>
+<div class="field">
+<label>Description</label>
+<textarea class="proj-desc" rows="2" placeholder="One per line, e.g.&#10;Automated resume generation and delivery&#10;Reduced manual formatting time to zero">${data.desc||''}</textarea>
+<small>One bullet point per line.</small>
+</div>
+`;
+document.getElementById('projectsList').appendChild(wrap);
+wrap.querySelector('.remove-btn').addEventListener('click', ()=>{
+wrap.remove();
+renderPreview();
+});
+wrap.querySelectorAll('input, textarea').forEach(i=>i.addEventListener('input', renderPreview));
+}
+
+/* ---------- HELPERS ---------- */
+
+function escapeHtml(str){
+return (str||'').replace(/[&<>"']/g, m=>({
+'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'
+}[m]));
+}
+
+function bulletsToList(text){
+const lines = (text||'').split('\n').map(l=>l.trim()).filter(Boolean);
+if(lines.length === 0) return '';
+return '<ul>' + lines.map(l=>`<li>${escapeHtml(l)}</li>`).join('') + '</ul>';
+}
+
+function autoSummary(){
+const title = document.getElementById('jobTitle').value.trim();
+const skills = document.getElementById('skills').value.trim();
+const skillList = skills.split(',').map(s=>s.trim()).filter(Boolean);
+const topSkills = skillList.slice(0,3).join(', ');
+
+const expCards = document.querySelectorAll('#experienceList .entry-card');
+const hasExperience = expCards.length > 0;
+
+let intro = title
+? `${title} candidate`
+: 'Motivated candidate';
+
+let body = hasExperience
+? 'with hands-on professional experience'
+: 'with strong academic and project experience';
+
+let skillsPart = topSkills
+? `, skilled in ${topSkills}`
+: '';
+
+return `${intro} ${body}${skillsPart}. Focused on writing clean, maintainable solutions and continuously learning new tools and technologies to deliver practical results.`;
+}
+
+function calculateAts(){
+const skills = document.getElementById('skills').value.trim();
+const skillCount = skills.split(',').map(s=>s.trim()).filter(Boolean).length;
+const summary = document.getElementById('summary').value.trim() || autoSummary();
+const eduCount = document.querySelectorAll('#educationList .entry-card').length;
+const expCount = document.querySelectorAll('#experienceList .entry-card').length;
+const projCount = document.querySelectorAll('#projectsList .entry-card').length;
+
+let score = 40;
+score += Math.min(skillCount * 3, 20);
+score += eduCount > 0 ? 10 : 0;
+score += Math.min(expCount * 8, 16);
+score += Math.min(projCount * 6, 12);
+score += summary.length > 60 ? 6 : 0;
+return Math.max(30, Math.min(score, 99));
+}
+
+/* ---------- RENDER PREVIEW ---------- */
+
+function renderPreview(){
+
+const name = document.getElementById('fullName').value.trim();
+const title = document.getElementById('jobTitle').value.trim();
+const email = document.getElementById('email').value.trim();
+const phone = document.getElementById('phone').value.trim();
+const location = document.getElementById('location').value.trim();
+const links = document.getElementById('links').value.trim();
+const skills = document.getElementById('skills').value.trim();
+let summary = document.getElementById('summary').value.trim();
+
+document.getElementById('pName').textContent = name || 'Your Name';
+document.getElementById('pTitle').textContent = title;
+
+const contactParts = [email, phone, location, links].filter(Boolean);
+document.getElementById('pContact').textContent = contactParts.join('  •  ');
+
+if(!summary){
+summary = autoSummary();
+}
+document.getElementById('pSummary').textContent = summary;
+document.getElementById('pSummary').classList.remove('r-empty');
+
+const skillTagsEl = document.getElementById('pSkills');
+const skillList = skills.split(',').map(s=>s.trim()).filter(Boolean);
+if(skillList.length){
+skillTagsEl.innerHTML = skillList.map(s=>`<span class="skill-tag">${escapeHtml(s)}</span>`).join('');
+} else {
+skillTagsEl.innerHTML = '<p class="r-empty">Add skills to see them listed here.</p>';
+}
+
+/* EXPERIENCE */
+const expEl = document.getElementById('pExperience');
+const expCards = document.querySelectorAll('#experienceList .entry-card');
+if(expCards.length === 0){
+expEl.innerHTML = '<p class="r-empty">Add an experience entry to see it here.</p>';
+} else {
+expEl.innerHTML = Array.from(expCards).map(card=>{
+const t = card.querySelector('.exp-title').value.trim();
+const c = card.querySelector('.exp-company').value.trim();
+const d = card.querySelector('.exp-duration').value.trim();
+const desc = card.querySelector('.exp-desc').value;
+return `
+<div class="entry-block">
+<div class="e-head"><span>${escapeHtml(t||'Job Title')}${c?(' — '+escapeHtml(c)):''}</span><span>${escapeHtml(d)}</span></div>
+${bulletsToList(desc)}
+</div>`;
+}).join('');
+}
+
+/* PROJECTS */
+const projEl = document.getElementById('pProjects');
+const projCards = document.querySelectorAll('#projectsList .entry-card');
+if(projCards.length === 0){
+projEl.innerHTML = '<p class="r-empty">Add a project to see it here.</p>';
+} else {
+projEl.innerHTML = Array.from(projCards).map(card=>{
+const t = card.querySelector('.proj-title').value.trim();
+const tech = card.querySelector('.proj-tech').value.trim();
+const desc = card.querySelector('.proj-desc').value;
+return `
+<div class="entry-block">
+<div class="e-head"><span>${escapeHtml(t||'Project Title')}</span></div>
+${tech?`<div class="e-sub">${escapeHtml(tech)}</div>`:''}
+${bulletsToList(desc)}
+</div>`;
+}).join('');
+}
+
+/* EDUCATION */
+const eduEl = document.getElementById('pEducation');
+const eduCards = document.querySelectorAll('#educationList .entry-card');
+if(eduCards.length === 0){
+eduEl.innerHTML = '<p class="r-empty">Add an education entry to see it here.</p>';
+} else {
+eduEl.innerHTML = Array.from(eduCards).map(card=>{
+const degree = card.querySelector('.edu-degree').value.trim();
+const school = card.querySelector('.edu-school').value.trim();
+const years = card.querySelector('.edu-years').value.trim();
+const notes = card.querySelector('.edu-notes').value.trim();
+return `
+<div class="entry-block">
+<div class="e-head"><span>${escapeHtml(degree||'Degree')}${school?(' — '+escapeHtml(school)):''}</span><span>${escapeHtml(years)}</span></div>
+${notes?`<div class="e-sub">${escapeHtml(notes)}</div>`:''}
+</div>`;
+}).join('');
+}
+
+/* ATS SCORE */
+document.getElementById('atsNum').textContent = calculateAts() + '%';
+
+}
+
+/* ---------- TEMPLATE SWITCH ---------- */
+
+document.querySelectorAll('.template-select button').forEach(btn=>{
+btn.addEventListener('click', ()=>{
+document.querySelectorAll('.template-select button').forEach(b=>b.classList.remove('active'));
+btn.classList.add('active');
+const paper = document.getElementById('resumePaper');
+paper.classList.remove('tpl-classic','tpl-modern');
+paper.classList.add('tpl-' + btn.dataset.tpl);
+});
+});
+
+/* ---------- TOP-LEVEL FIELD LISTENERS ---------- */
+
+['fullName','jobTitle','email','phone','location','links','summary','skills'].forEach(id=>{
+document.getElementById(id).addEventListener('input', renderPreview);
+});
+
+/* ---------- ADD BUTTONS ---------- */
+
+document.getElementById('addEducation').addEventListener('click', ()=>{
+addEducationEntry();
+renderPreview();
+});
+
+document.getElementById('addExperience').addEventListener('click', ()=>{
+addExperienceEntry();
+renderPreview();
+});
+
+document.getElementById('addProject').addEventListener('click', ()=>{
+addProjectEntry();
+renderPreview();
+});
+
+/* ---------- ACTIONS ---------- */
+
+document.getElementById('downloadBtn').addEventListener('click', ()=>{
+window.print();
+});
+
+document.getElementById('clearBtn').addEventListener('click', ()=>{
+if(!confirm('Clear all fields and start over?')) return;
+['fullName','jobTitle','email','phone','location','links','summary','skills'].forEach(id=>{
+document.getElementById(id).value = '';
+});
+document.getElementById('educationList').innerHTML = '';
+document.getElementById('experienceList').innerHTML = '';
+document.getElementById('projectsList').innerHTML = '';
+renderPreview();
+});
+
+document.getElementById('sampleBtn').addEventListener('click', ()=>{
+document.getElementById('fullName').value = 'Karthikeya';
+document.getElementById('jobTitle').value = 'AI & Automation Engineer';
+document.getElementById('email').value = 'user@gmail.com';
+document.getElementById('phone').value = '+91 90000 00000';
+document.getElementById('location').value = 'Hyderabad, India';
+document.getElementById('links').value = 'linkedin.com/in/karthikeya, github.com/karthikeya';
+document.getElementById('summary').value = '';
+document.getElementById('skills').value = 'Java, Python, SQL, n8n, JavaScript, REST APIs, Gemini AI';
+
+document.getElementById('educationList').innerHTML = '';
+document.getElementById('experienceList').innerHTML = '';
+document.getElementById('projectsList').innerHTML = '';
+
+addEducationEntry({degree:'B.Tech, Computer Science & Engineering', school:'ABC University', years:'2022 - 2026', notes:'CGPA 8.7 / 10'});
+addExperienceEntry({title:'Automation Intern', company:'Acme Corp', duration:'Jun 2025 - Aug 2025', desc:'Built n8n workflows to automate internal reporting\nIntegrated Gemini AI for content generation tasks\nReduced manual data entry time by 60%'});
+addProjectEntry({title:'AI Resume Builder', tech:'n8n, Gemini AI, Gmail API, PDF Generation API', desc:'Designed an end-to-end workflow that generates ATS-friendly resumes\nAutomated PDF creation and email delivery to users'});
+
+renderPreview();
+});
+
+/* ---------- INIT ---------- */
+
+addEducationEntry();
+addExperienceEntry();
+addProjectEntry();
+renderPreview();
+
+</script>
 
 </body>
 </html>
