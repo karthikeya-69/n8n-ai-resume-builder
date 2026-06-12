@@ -74,6 +74,12 @@ list-style:none;
 gap:25px;
 }
 
+.nav-tag{
+color:var(--muted);
+font-size:.85rem;
+letter-spacing:.04em;
+}
+
 nav a{
 color:var(--muted);
 text-decoration:none;
@@ -84,94 +90,11 @@ nav a:hover{
 color:var(--accent);
 }
 
-/* HERO */
-.hero{
-min-height:80vh;
-display:flex;
-justify-content:center;
-align-items:center;
-text-align:center;
-padding:120px 20px 60px;
-position:relative;
-background:
-radial-gradient(circle at 20% 20%, rgba(94,234,212,0.08), transparent 40%),
-radial-gradient(circle at 80% 70%, rgba(251,191,36,0.06), transparent 40%);
-}
-
-.hero-content{
-max-width:880px;
-}
-
-.eyebrow{
-display:inline-block;
-padding:6px 16px;
-border:1px solid var(--border);
-border-radius:30px;
-color:var(--accent);
-font-size:.85rem;
-letter-spacing:.08em;
-text-transform:uppercase;
-margin-bottom:25px;
-}
-
-.hero h1{
-font-family:'Source Serif 4', serif;
-font-weight:600;
-font-size:clamp(2.4rem,6vw,4.6rem);
-line-height:1.1;
-margin-bottom:20px;
-}
-
-.hero span{
-color:var(--accent);
-}
-
-.hero p{
-font-size:1.1rem;
-color:var(--muted);
-max-width:650px;
-margin:auto;
-}
-
-.hero-buttons{
-margin-top:35px;
-display:flex;
-justify-content:center;
-gap:15px;
-flex-wrap:wrap;
-}
-
-.btn{
-padding:14px 26px;
-border-radius:10px;
-text-decoration:none;
-font-weight:700;
-transition:.3s;
-border:1px solid transparent;
-cursor:pointer;
-font-size:1rem;
-}
-
-.primary{
-background:var(--accent);
-color:#0b1410;
-}
-
-.secondary{
-border:1px solid var(--border);
-color:var(--text);
-background:transparent;
-}
-
-.btn:hover{
-transform:translateY(-3px);
-}
-
 /* SECTIONS */
 section{
 max-width:1300px;
 margin:auto;
-padding:60px 20px 90px;
+padding:110px 20px 60px;
 }
 
 .section-title{
@@ -361,6 +284,32 @@ font-size:.92rem;
 padding:13px 18px;
 }
 
+.btn{
+padding:14px 26px;
+border-radius:10px;
+text-decoration:none;
+font-weight:700;
+transition:.3s;
+border:1px solid transparent;
+cursor:pointer;
+font-size:1rem;
+}
+
+.primary{
+background:var(--accent);
+color:#0b1410;
+}
+
+.secondary{
+border:1px solid var(--border);
+color:var(--text);
+background:transparent;
+}
+
+.btn:hover{
+transform:translateY(-3px);
+}
+
 /* PREVIEW */
 .preview-panel{
 position:sticky;
@@ -516,137 +465,6 @@ font-size:.83rem;
 font-family:'Space Grotesk',sans-serif;
 }
 
-/* FEATURES */
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
-gap:20px;
-}
-
-.card{
-background:var(--card);
-border:1px solid var(--border);
-padding:25px;
-border-radius:18px;
-transition:.3s;
-}
-
-.card:hover{
-transform:translateY(-5px);
-border-color:var(--accent);
-}
-
-.card .icon{
-font-size:1.6rem;
-}
-
-.card h3{
-margin:14px 0 8px;
-font-size:1.05rem;
-}
-
-.card p{
-color:var(--muted);
-font-size:.9rem;
-line-height:1.5;
-}
-
-/* FLOW / ARCHITECTURE */
-.flow{
-display:flex;
-flex-direction:column;
-gap:0;
-max-width:600px;
-margin:auto;
-}
-
-.flow-step{
-display:flex;
-align-items:center;
-gap:18px;
-padding:18px 22px;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:14px;
-}
-
-.flow-step .num{
-width:36px;
-height:36px;
-border-radius:50%;
-background:rgba(94,234,212,0.1);
-color:var(--accent);
-display:flex;
-align-items:center;
-justify-content:center;
-font-weight:700;
-flex-shrink:0;
-}
-
-.flow-step .label{
-font-weight:600;
-}
-
-.flow-step .desc{
-color:var(--muted);
-font-size:.85rem;
-}
-
-.flow-arrow{
-text-align:center;
-color:var(--accent);
-padding:6px 0;
-font-size:1rem;
-}
-
-/* TECH TABLE */
-.tech-table{
-width:100%;
-border-collapse:collapse;
-background:var(--card);
-border:1px solid var(--border);
-border-radius:14px;
-overflow:hidden;
-}
-
-.tech-table th,
-.tech-table td{
-text-align:left;
-padding:14px 20px;
-border-bottom:1px solid var(--border);
-font-size:.95rem;
-}
-
-.tech-table th{
-color:var(--accent);
-text-transform:uppercase;
-font-size:.8rem;
-letter-spacing:.06em;
-background:var(--card2);
-}
-
-.tech-table tr:last-child td{
-border-bottom:none;
-}
-
-.tech-table td:first-child{
-font-weight:600;
-}
-
-/* FOOTER */
-footer{
-padding:40px 20px;
-text-align:center;
-border-top:1px solid var(--border);
-color:var(--muted);
-font-size:.9rem;
-}
-
-footer a{
-color:var(--accent);
-text-decoration:none;
-}
-
 /* PRINT */
 @media print{
 body *{
@@ -670,32 +488,11 @@ border-radius:0;
 
 <nav>
 <div class="logo">📄 AI Resume Builder</div>
-<ul>
-<li><a href="#builder">Build Resume</a></li>
-<li><a href="#features">Features</a></li>
-<li><a href="#architecture">Architecture</a></li>
-<li><a href="#stack">Tech Stack</a></li>
-</ul>
+<div class="nav-tag">n8n · Gemini AI · Gmail · PDF Generation</div>
 </nav>
 
-<section class="hero">
-<div class="hero-content">
-<div class="eyebrow">n8n · Gemini AI · Gmail · PDF Generation</div>
-<h1>Build your own <span>ATS-friendly resume</span> — free, in your browser</h1>
-<p>
-Fill in your details on the left and watch your resume take shape on the
-right in real time. Pick a template, check your ATS score, and download
-it as a PDF when you're done.
-</p>
-<div class="hero-buttons">
-<a href="#builder" class="btn primary">Start Building</a>
-<a href="https://github.com" class="btn secondary">View on GitHub</a>
-</div>
-</div>
-</section>
-
 <section id="builder">
-<h2 class="section-title">Resume Builder</h2>
+<h2 class="section-title">Build your own ATS-friendly resume</h2>
 <p class="section-sub">Everything you type updates the preview instantly. Nothing is uploaded — it all stays in your browser.</p>
 
 <div class="builder">
@@ -833,151 +630,9 @@ ATS Score: <span class="ats-num" id="atsNum">—</span>
 
 </div>
 
-</div>
-</section>
-
-<section id="features">
-<h2 class="section-title">Features</h2>
-<p class="section-sub">Everything needed to go from raw details to a delivered resume.</p>
-
-<div class="grid">
-
-<div class="card">
-<div class="icon">✍️</div>
-<h3>Build It Yourself</h3>
-<p>Type your own details into the form and see your real resume update live — no AI guesswork needed.</p>
-</div>
-
-<div class="card">
-<div class="icon">📋</div>
-<h3>ATS-Friendly Formatting</h3>
-<p>A simple ATS score estimates how well your resume's content and structure suit applicant tracking systems.</p>
-</div>
-
-<div class="card">
-<div class="icon">🧾</div>
-<h3>One-Click PDF Download</h3>
-<p>Download your finished resume as a clean, print-ready PDF directly from your browser.</p>
-</div>
-
-<div class="card">
-<div class="icon">🎨</div>
-<h3>Switchable Templates</h3>
-<p>Toggle between a classic serif layout and a modern accent-colored layout instantly.</p>
-</div>
-
-<div class="card">
-<div class="icon">🤖</div>
-<h3>AI-Assisted Summary</h3>
-<p>Leave the summary blank and a tailored draft is generated from your skills, role and experience.</p>
-</div>
-
-<div class="card">
-<div class="icon">🔒</div>
-<h3>Private by Default</h3>
-<p>Everything runs in your browser — nothing you type is uploaded or stored anywhere.</p>
-</div>
 
 </div>
 </section>
-
-<section id="architecture">
-<h2 class="section-title">System Architecture</h2>
-<p class="section-sub">How the full automated workflow works behind the scenes.</p>
-
-<div class="flow">
-
-<div class="flow-step">
-<div class="num">1</div>
-<div>
-<div class="label">User Input</div>
-<div class="desc">Candidate submits name, email, education, skills, projects and experience.</div>
-</div>
-</div>
-
-<div class="flow-arrow">↓</div>
-
-<div class="flow-step">
-<div class="num">2</div>
-<div>
-<div class="label">Webhook</div>
-<div class="desc">n8n webhook receives the submitted JSON payload.</div>
-</div>
-</div>
-
-<div class="flow-arrow">↓</div>
-
-<div class="flow-step">
-<div class="num">3</div>
-<div>
-<div class="label">Set Fields</div>
-<div class="desc">Incoming data is normalized and mapped to the fields the AI prompt expects.</div>
-</div>
-</div>
-
-<div class="flow-arrow">↓</div>
-
-<div class="flow-step">
-<div class="num">4</div>
-<div>
-<div class="label">Gemini AI</div>
-<div class="desc">Generates ATS-friendly resume content from the structured input.</div>
-</div>
-</div>
-
-<div class="flow-arrow">↓</div>
-
-<div class="flow-step">
-<div class="num">5</div>
-<div>
-<div class="label">JavaScript Processing</div>
-<div class="desc">AI output is cleaned, parsed and formatted for document generation.</div>
-</div>
-</div>
-
-<div class="flow-arrow">↓</div>
-
-<div class="flow-step">
-<div class="num">6</div>
-<div>
-<div class="label">PDF Generation API</div>
-<div class="desc">Formatted resume content is rendered into a polished PDF document.</div>
-</div>
-</div>
-
-<div class="flow-arrow">↓</div>
-
-<div class="flow-step">
-<div class="num">7</div>
-<div>
-<div class="label">Email Delivery</div>
-<div class="desc">The final PDF resume is sent automatically to the user's inbox via Gmail.</div>
-</div>
-</div>
-
-</div>
-</section>
-
-<section id="stack">
-<h2 class="section-title">Tech Stack</h2>
-<p class="section-sub">Tools and services powering the workflow.</p>
-
-<table class="tech-table">
-<tr><th>Technology</th><th>Purpose</th></tr>
-<tr><td>n8n</td><td>Workflow Automation</td></tr>
-<tr><td>Gemini AI</td><td>Resume Content Generation</td></tr>
-<tr><td>JavaScript</td><td>Data Processing</td></tr>
-<tr><td>REST APIs</td><td>External Integrations</td></tr>
-<tr><td>PDF Generation API</td><td>PDF Creation</td></tr>
-<tr><td>Gmail</td><td>Email Automation</td></tr>
-<tr><td>Webhooks</td><td>Data Collection</td></tr>
-</table>
-
-</section>
-
-<footer>
-📄 AI Resume Builder • Built with n8n + Gemini AI + Gmail API — by Karthikeya
-</footer>
 
 <script>
 
